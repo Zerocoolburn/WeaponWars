@@ -15,17 +15,17 @@ app.use(helmet());
 app.use(xss());
 app.use(cors());
 
-// Root Route (handles '/')
+// Root Route
 app.get('/', (req, res) => {
   res.send('Welcome to WeaponWars!');
 });
 
-// Corrected paths to the API routes
-app.use('/api/auth', require('./Backend/routes/authRoutes'));  // Correct route to Backend folder
-app.use('/api/game', require('./Backend/routes/gameRoutes'));  // Ensure gameRoutes exists
+// API Routes
+app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/game', require('./routes/gameRoutes'));
 
-// 404 Route (for undefined routes)
-app.use((req, res, next) => {
+// 404 Route
+app.use((req, res) => {
   res.status(404).send('Route not found');
 });
 

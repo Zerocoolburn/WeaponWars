@@ -1,11 +1,23 @@
-// backend/routes/gameRoutes.js
 const express = require('express');
 const router = express.Router();
-const { protect } = require('../middleware/authMiddleware');
-const gameController = require('../controllers/gameController');
+const supabase = require('../db');
 
-router.post('/buy', protect, gameController.buyWeapon);
-router.post('/sell', protect, gameController.sellWeapon);
-router.post('/travel', protect, gameController.travelToCity);
+// Update user's score
+router.post('/update-score', async (req, res) => {
+  const { username, score } = req.body;
+
+  try {
+    const { data, error } = await supabase
+      .from('users')
+      .update({ score })
+      .eq('username', username);
+
+    if (error) throw error;
+
+    res.status(200).json({ message: 'Score updated successfully' });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to update score' });
+  }
+});
 
 module.exports = router;
