@@ -21,8 +21,8 @@ app.get('/', (req, res) => {
 });
 
 // Corrected paths to the API routes
-app.use('/api/auth', require('./Backend/routes/authRoutes'));
-app.use('/api/game', require('./Backend/routes/gameRoutes'));
+app.use('/api/auth', require('./Backend/routes/authRoutes'));  // Correct route to Backend folder
+app.use('/api/game', require('./Backend/routes/gameRoutes'));  // Ensure gameRoutes exists
 
 // 404 Route (for undefined routes)
 app.use((req, res, next) => {
