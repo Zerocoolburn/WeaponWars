@@ -20,10 +20,9 @@ app.get('/', (req, res) => {
   res.send('Welcome to WeaponWars!');
 });
 
-// Other API routes (e.g., auth, game routes)
-// You can add other API endpoints here if needed
-app.use('/api/auth', require('./routes/authRoutes'));
-app.use('/api/game', require('./routes/gameRoutes'));
+// Corrected paths to the API routes
+app.use('/api/auth', require('./Backend/routes/authRoutes'));
+app.use('/api/game', require('./Backend/routes/gameRoutes'));
 
 // 404 Route (for undefined routes)
 app.use((req, res, next) => {
