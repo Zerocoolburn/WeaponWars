@@ -1,26 +1,15 @@
-// backend/server.js
 const express = require('express');
-const http = require('http');
-const socketIo = require('socket.io');
-const helmet = require('helmet');       // Security headers
-const xss = require('xss-clean');       // Prevent XSS attacks
-const cors = require('cors');           // Enable CORS
+const helmet = require('helmet');
+const xss = require('xss-clean');
+const cors = require('cors');
 const dotenv = require('dotenv');
 const authRoutes = require('./routes/authRoutes');
 const playerRoutes = require('./routes/playerRoutes');
 const gameRoutes = require('./routes/gameRoutes');
-const errorHandler = require('./middleware/errorHandler');
 
 dotenv.config();
 
 const app = express();
-const server = http.createServer(app);
-const io = socketIo(server, {
-  cors: {
-    origin: '*',
-  },
-});
-const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(express.json());
@@ -33,13 +22,18 @@ app.use('/api/auth', authRoutes);
 app.use('/api/players', playerRoutes);
 app.use('/api/game', gameRoutes);
 
-// Error Handler
-app.use(errorHandler);
+// Root Route
+app.get('/', (req, res) => {
+  res.send('Welcome to WeaponWars!');
+});
 
-// Socket.io logic
-require('./gameLogic/weaponWarsGame')(io);
+// Error Handling for non-existing routes
+app.use((req, res, next) => {
+  res.status(404).send('Not Found');
+});
 
-// Start server
-server.listen(PORT, () => {
+// Start Server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
